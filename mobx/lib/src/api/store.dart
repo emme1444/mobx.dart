@@ -9,4 +9,6 @@ import 'package:mobx/mobx.dart';
 mixin Store {
   /// Override this method to use a custom context.
   ReactiveContext get context => mainContext;
+
+  List<dynamic> trackAll();
 }

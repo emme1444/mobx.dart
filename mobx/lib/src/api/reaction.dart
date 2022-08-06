@@ -1,5 +1,38 @@
 import 'package:mobx/src/api/context.dart';
+import 'package:mobx/src/api/store.dart';
 import 'package:mobx/src/core.dart';
+
+/// Executes the specified [effect], whenever any of the shallow observables of
+/// [store] changes.
+///
+/// Optional configuration:
+/// * [name]: debug name for this reaction
+/// * [delay]: throttling delay in milliseconds
+ReactionDisposer anyStore(
+  Store store,
+  void Function(List<dynamic>) effect, {
+  String? name,
+  int? delay,
+  bool? fireImmediately,
+  // EqualityComparer<T>? equals,
+  ReactiveContext? context,
+  void Function(Object, Reaction)? onError,
+}) {
+  return reaction<List<dynamic>>(
+    (_) {
+      return store.trackAll();
+    },
+    (changes) {
+      effect(changes);
+    },
+    name: name,
+    delay: delay,
+    fireImmediately: fireImmediately,
+    // equals: equals,
+    context: context,
+    onError: onError,
+  );
+}
 
 /// Executes the specified [fn], whenever the dependent observables change. It returns
 /// a disposer that can be used to dispose the autorun.

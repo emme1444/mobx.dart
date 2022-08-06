@@ -1,13 +1,19 @@
 import 'package:mobx/mobx.dart';
 import 'package:test/test.dart';
 
-class TestStore with Store {}
+class TestStore with Store {
+  @override
+  List trackAll() => [];
+}
 
 final customContext = ReactiveContext();
 
 class CustomStore with Store {
   @override
   ReactiveContext get context => customContext;
+
+  @override
+  List trackAll() => [];
 }
 
 void main() {

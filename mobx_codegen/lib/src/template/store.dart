@@ -72,6 +72,20 @@ ${allStrings.join(',\n')}
   ''';
   }
 
+  String get trackAllMethod {
+    final observableNames = observables.templates
+        .where((e) => !e.isPrivate)
+        .map((e) => e.name)
+        .toList();
+    final joinedObservableNamesString = observableNames.join(",");
+    return '''
+  @override
+  List<dynamic> trackAll() {
+    return [$joinedObservableNamesString];
+  }
+  ''';
+  }
+
   String get storeBody => '''
   $computeds
 
@@ -86,6 +100,8 @@ ${allStrings.join(',\n')}
   $actionControllerField
 
   $actions
+
+  $trackAllMethod
 
   $toStringMethod
   ''';
